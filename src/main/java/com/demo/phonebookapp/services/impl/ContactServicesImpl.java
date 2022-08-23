@@ -40,9 +40,12 @@ public class ContactServicesImpl implements ContactServicesI {
 	}
 
 	@Override
-	public Contact updateContact(Contact contact, Integer contactId) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean updateContact(Contact contact) {
+		Contact update = contactRepository.save(contact);
+		if(update == null) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override
