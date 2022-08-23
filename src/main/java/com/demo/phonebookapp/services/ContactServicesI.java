@@ -6,7 +6,7 @@ import com.demo.phonebookapp.entities.Contact;
 
 public interface ContactServicesI {
 	
-	  boolean  saveContact(Contact contact);
+	  boolean saveContact(Contact contact);
 	  List<Contact>  getAllContact();
 	  Contact    getContactById(Integer contactId);
 	  Contact updateContact(Contact contact,Integer contactId);

@@ -28,8 +28,8 @@ public class ContactServicesImpl implements ContactServicesI {
 
 	@Override
 	public List<Contact> getAllContact() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Contact> findAll = contactRepository.findAll();
+		return findAll;
 	}
 
 	@Override
