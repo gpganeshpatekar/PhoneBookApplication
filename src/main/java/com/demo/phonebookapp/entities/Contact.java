@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -50,7 +51,7 @@ public class Contact {
 	private LocalDate createdDate;
 	
 	@Column(name="UPDATED_DATE",insertable = false)
-	@CreationTimestamp
+	@UpdateTimestamp
 	private LocalDate  updateDate;
 
 }

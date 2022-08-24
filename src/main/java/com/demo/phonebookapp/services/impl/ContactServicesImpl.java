@@ -50,8 +50,19 @@ public class ContactServicesImpl implements ContactServicesI {
 
 	@Override
 	public boolean deleteContactById(Integer contactId) {
-		// TODO Auto-generated method stub
-		return false;
+		
+		// condition for checking if id is available in database
+		// by using existBy
+		boolean existsById = contactRepository.existsById(contactId);
+		
+		if(existsById) {
+			// for hard delete
+			contactRepository.deleteById(contactId);
+			return true;
+		}else {
+			return false;
+		}
+		
 	}
 	
 }
