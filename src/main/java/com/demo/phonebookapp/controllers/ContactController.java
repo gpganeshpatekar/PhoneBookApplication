@@ -49,7 +49,13 @@ public class ContactController {
 	@GetMapping(value = "/getContactById/{contactId}", produces = "application/json")
 	public ResponseEntity<Contact> getContactById(@PathVariable Integer contactId){
 		Contact contactById = contactServiceI.getContactById(contactId);
+		if(contactById != null) {
 			return new ResponseEntity<Contact>(contactById,HttpStatus.OK);
+		}else {
+			String msg = "Contact Not Found.. Invalid Contact Id..";
+			return new ResponseEntity(msg,HttpStatus.BAD_REQUEST);
+		}
+			
 	}
 	
 	@PutMapping(value = "/updateContact",consumes = "application/json")
@@ -64,15 +70,15 @@ public class ContactController {
 		}
 	}
 	
-	@DeleteMapping(value = "/deleteContactById/{contactId}",consumes = "application/json")
-	public ResponseEntity<String> updateContact(Integer contactId){
+	@DeleteMapping(value = "/deleteContactById/{contactId}")
+	public ResponseEntity<String> updateContact(@PathVariable Integer contactId){
 		boolean deleteById = contactServiceI.deleteContactById(contactId);
 		if(deleteById == true) {
-			String msg = "Contact Deleted Successfully";
-			return new ResponseEntity<String>(msg, HttpStatus.OK);
+//			return new ResponseEntity<String>("Contact Deleted Successfully", HttpStatus.OK);
+			return new ResponseEntity<String>("Record Deleted Successfully", HttpStatus.OK);
 		}else {
-			String msg = "Can't Delete Contact.. Invalid Contact ID";
-			return new ResponseEntity<String>(msg, HttpStatus.BAD_REQUEST);
+//			return new ResponseEntity<String>("Can't Delete Contact.. Invalid Contact ID", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Can't Delete Record.. Invalid ID", HttpStatus.BAD_REQUEST);
 		}
 	}
 }

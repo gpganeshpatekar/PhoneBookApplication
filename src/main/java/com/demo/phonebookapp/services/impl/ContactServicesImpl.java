@@ -2,6 +2,7 @@ package com.demo.phonebookapp.services.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,13 +31,18 @@ public class ContactServicesImpl implements ContactServicesI {
 	@Override
 	public List<Contact> getAllContact() {
 		List<Contact> findAll = contactRepository.findAll();
-		return findAll;
+		List<Contact> contacts = findAll.stream().filter(contact->contact.getActiveSwitch() == 'Y').collect(Collectors.toList());
+		return contacts;
 	}
 
 	@Override
 	public Contact getContactById(Integer contactId) {
 		Contact contact = contactRepository.findById(contactId).get();
-		return contact;
+		if(contact.getActiveSwitch()=='Y') {
+			return contact;
+		}else {
+			return null;
+		}
 	}
 
 	@Override
@@ -51,17 +57,32 @@ public class ContactServicesImpl implements ContactServicesI {
 	@Override
 	public boolean deleteContactById(Integer contactId) {
 		
+	// condition for checking if id is available in database
+	// by using existBy
+	// boolean existsById = contactRepository.existsById(contactId);
+		
+	// if(existsById) {
+			// for hard delete
+	//		contactRepository.deleteById(contactId);
+	//		return true;
+	//	}else {
+	//		return false;
+	//	}
+
 		// condition for checking if id is available in database
 		// by using existBy
-		boolean existsById = contactRepository.existsById(contactId);
+		Optional<Contact> contact = contactRepository.findById(contactId);
 		
-		if(existsById) {
-			// for hard delete
-			contactRepository.deleteById(contactId);
+		if(contact.isPresent()) {
+			// for soft delete
+			Contact contact1 = contact.get();
+			contact1.setActiveSwitch('N');
+			contactRepository.save(contact1);
 			return true;
 		}else {
 			return false;
-		}
+		}		
+		
 		
 	}
 	
