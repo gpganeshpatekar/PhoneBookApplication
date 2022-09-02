@@ -37,6 +37,15 @@ public class ContactServicesImpl implements ContactServicesI {
 
 	@Override
 	public Contact getContactById(Integer contactId) {
+		
+//		Optional<Contact> findById = contactRepository.findById(contactId);
+//		
+//		if(findById.isPresent()) {
+//			Contact contact = findById.get();
+//			return contact;
+//		}else {
+//			return null;
+//		}
 		Contact contact = contactRepository.findById(contactId).get();
 		if(contact.getActiveSwitch()=='Y') {
 			return contact;
@@ -47,11 +56,12 @@ public class ContactServicesImpl implements ContactServicesI {
 
 	@Override
 	public boolean updateContact(Contact contact) {
-		Contact update = contactRepository.save(contact);
-		if(update == null) {
-			return false;
+		Optional<Contact> contact1 = contactRepository.findById(contact.getContactId());
+		if(contact1.isPresent()) {
+			Contact update = contactRepository.save(contact);
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	@Override
