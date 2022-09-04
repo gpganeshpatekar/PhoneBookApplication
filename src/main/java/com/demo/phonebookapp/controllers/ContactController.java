@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.phonebookapp.entities.Contact;
+import com.demo.phonebookapp.exceptions.NoSuchElementException;
+import com.demo.phonebookapp.payloads.ApiResponse;
 import com.demo.phonebookapp.services.ContactServicesI;
 
 @RestController
@@ -51,12 +53,9 @@ public class ContactController {
 	@GetMapping(value = "/{contactId}", produces = "application/json")
 	public ResponseEntity<Contact> getContactById(@PathVariable Integer contactId){
 		Contact contactById = contactServiceI.getContactById(contactId);
-		if(contactById != null) {
-			return new ResponseEntity<Contact>(contactById,HttpStatus.OK);
-		}else {
-			String msg = "Contact Not Found.. Invalid Contact ID..";
-			return new ResponseEntity(msg,HttpStatus.BAD_REQUEST);
-		}
+		
+		return new ResponseEntity<Contact>(contactById,HttpStatus.OK);
+		
 			
 	}
 	
@@ -73,7 +72,7 @@ public class ContactController {
 	}
 	
 	@DeleteMapping(value = "/{contactId}")
-	public ResponseEntity<String> updateContact(@PathVariable Integer contactId){
+	public ResponseEntity<String> deleteContact(@PathVariable Integer contactId){
 		boolean deleteById = contactServiceI.deleteContactById(contactId);
 		if(deleteById == true) {
 //			return new ResponseEntity<String>("Contact Deleted Successfully", HttpStatus.OK);

@@ -3,11 +3,13 @@ package com.demo.phonebookapp.services.impl;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.demo.phonebookapp.entities.Contact;
+import com.demo.phonebookapp.exceptions.NoSuchElementException;
 import com.demo.phonebookapp.repositories.ContactRepository;
 import com.demo.phonebookapp.services.ContactServicesI;
 
@@ -38,6 +40,8 @@ public class ContactServicesImpl implements ContactServicesI {
 	@Override
 	public Contact getContactById(Integer contactId) {
 		
+		Contact Contact = contactRepository.findById(contactId).filter(c->c.getActiveSwitch() == 'Y')
+		.orElseThrow(()-> new NoSuchElementException("Contact","id",contactId));
 //		Optional<Contact> findById = contactRepository.findById(contactId);
 //		
 //		if(findById.isPresent()) {
@@ -46,12 +50,13 @@ public class ContactServicesImpl implements ContactServicesI {
 //		}else {
 //			return null;
 //		}
-		Contact contact = contactRepository.findById(contactId).get();
-		if(contact.getActiveSwitch()=='Y') {
-			return contact;
-		}else {
-			return null;
-		}
+//		Contact contact = contactRepository.findById(contactId).get();
+//		if(contact.getActiveSwitch()=='Y') {
+//			return contact;
+//		}else{
+//			return null;
+//	}
+		return Contact;
 	}
 
 	@Override
